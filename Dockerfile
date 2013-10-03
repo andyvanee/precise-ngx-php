@@ -1,4 +1,6 @@
-FROM andyvanee/nginx
+FROM ubuntu
+
+MAINTAINER Andy Vanee "1andyvanee@gmail.com"
 
 # Build the site.
 ADD . /app
