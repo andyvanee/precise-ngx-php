@@ -14,17 +14,16 @@ Trying to build Vagrant boxes and Docker containers the same way.
     # Build the machine ( uses ./build_vagrant.sh )
     vagrant up
 
-    # Take not of the name that virtual box gave it
+    # Take note of the name that virtual box gave it
     VBoxManage list runningvms
 
     # SSH in if you'd like to confirm everything is in place
     vagrant ssh
     # ...
 
-    # If it's all good
     vagrant halt
 
-    # Substitute your own virtualbox name for the --base option
+    # Substitute the virtualbox name for the --base option
     vagrant package --output precise-ngx-php.box --base precise-ngx-php_1380768459
 
     # Upload the file at build/precise-ngx-php.box somewhere, or add it to
