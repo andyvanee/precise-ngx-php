@@ -3,33 +3,43 @@ precise-ngx-php
 
 Vagrant / Docker boxes - PHP app server
 
-Trying to build Vagrant boxes and Docker containers the same way.
+A Vagrant box (for development) and Docker container (for production) built
+the same way.
 
-- Precise64
+- Ubuntu 12.04 Precise 64
 - Nginx
 - PHP-FPM
 
-## To build a new vagrant box:
+## To build a new Vagrant box:
 
-    # Build the machine ( uses ./build_vagrant.sh )
+    # Build & run the box
     vagrant up
-
-    # Take note of the name that virtual box gave it
     VBoxManage list runningvms
-
-    # SSH in if you'd like to confirm everything is in place
-    vagrant ssh
-    # ...
-
+        ---> copy the name of the vm, eg "precise-ngx-php_1380859657"
+    vagrant ssh   # Check that everything looks ok
     vagrant halt
+    vagrant package --output build/precise-ngx-php.box --base {name of vm here}
 
-    # Substitute the virtualbox name for the --base option
-    vagrant package --output precise-ngx-php.box --base precise-ngx-php_1380768459
+Now you can upload the file somewhere ( build/precise-ngx-php.box ), or just
+use it by name after running:
 
-    # Upload the file at build/precise-ngx-php.box somewhere, or add it to
-    # vagrant like so.
-    vagrant box add precise-php build/precise-ngx-php.box
+    vagrant box add precise-php build/precise-ngx-php.box`
 
-    # Now you can use it for any project, just add this to your Vagrantfile
+    # then in any other Vagrantfile
     config.vm.box = "precise-php"
 
+## To build a new Docker container
+
+    # clone this repo inside the docker repo (just easier)
+    cd docker
+    export FORWARD_DOCKER_PORTS=true  # so we can view things in our browser
+    vagrant up
+    vagrant ssh
+    $ sudo bash   # all docker commands now require root
+    $ cd /vagrant/precise-nginx-php
+    $ docker build -t yourname/nginx-php .
+    $ docker run -d yourname/nginx-php
+    $ docker ps
+
+The last line will show you the port that it's running on
+( eg: http://127.0.0.1:49155 )
